@@ -1,5 +1,4 @@
 package curry.qin.ThreadStudy;
-
 /**
  * @author curry
  * @version V1.0
@@ -8,30 +7,61 @@ package curry.qin.ThreadStudy;
  * @Copyright © 2019-2020 yamibuy
  */
 public class ThreadSleepTest {
-    private  int i = 0;
+    private static final Object obj = new Object();
+
+    private  int i= 10;
 
     public static void main(String[] args) {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("当前线程名称"+Thread.currentThread().getName());
-                try {
-                    Thread.currentThread().sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                //取得obj对象锁的才可以继续执行，否则阻塞
+                synchronized(obj){
+                    System.out.println(Thread.currentThread().getName()+"取得对象锁");
+                    try {
+                        //thread1休息，cpu可执行其他任务 但是确没有释放对obi对象的锁，
+                        // 遇到获取obj对象锁的才可以执行的得释放锁之后才能执行
+                        System.out.println(Thread.currentThread().getName()+"休息");
+                        Thread.currentThread().sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-                System.out.println("结束睡眠"+Thread.currentThread().getName());
+                System.out.println(Thread.currentThread().getName()+"休息完毕，释放掉对象锁");
             }
         });
 
         Thread t2 = new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("当前线程名称"+Thread.currentThread().getName());
+                synchronized (obj){
+                    System.out.println(Thread.currentThread().getName()+"取得对象锁");
+                    System.out.println(Thread.currentThread().getName()+"业务处理");
+                }
             }
         });
-
         t1.start();
         t2.start();
+    }
+
+    class Thread1 implements Runnable{
+
+        @Override
+        public void run() {
+            for(int j =0;j< 10;j++){
+                i = i++;
+                System.out.println(i);
+            }
+        }
+    }
+    class Thread2 implements Runnable{
+
+        @Override
+        public void run() {
+            for(int j =0;j< 10;j++){
+                i = i++;
+                System.out.println(i);
+            }
+        }
     }
 }
