@@ -7,7 +7,7 @@ package curry.qin.ThreadStudy;
  * @date 2020/3/5 16:07
  * @Copyright © 2019-2020 yamibuy
  */
-public class ThreadJoinTest {
+public class ThreadJoinMethosTest {
     public static void main(String[] args) throws InterruptedException {
         Thread t1 = new Thread(new Runnable() {
             @Override

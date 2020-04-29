@@ -1,4 +1,7 @@
 package curry.qin.ThreadStudy;
+
+import java.util.concurrent.Semaphore;
+
 /**
  * @author curry
  * @version V1.0
@@ -6,8 +9,9 @@ package curry.qin.ThreadStudy;
  * @date 2020/3/4 13:38
  * @Copyright © 2019-2020 yamibuy
  */
-public class ThreadSleepTest {
-    private static final Object obj = new Object();
+public class ThreadSleepMethodTest {
+    //Semaphore可以控制某个资源可被同时访问的个数
+    private static Semaphore semaphore = new Semaphore(1);
 
     private  int i= 10;
 
@@ -15,28 +19,30 @@ public class ThreadSleepTest {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                //取得obj对象锁的才可以继续执行，否则阻塞
-                synchronized(obj){
-                    System.out.println(Thread.currentThread().getName()+"取得对象锁");
+                while (true){
                     try {
-                        //thread1休息，cpu可执行其他任务 但是确没有释放对obi对象的锁，
-                        // 遇到获取obj对象锁的才可以执行的得释放锁之后才能执行
-                        System.out.println(Thread.currentThread().getName()+"休息");
-                        Thread.currentThread().sleep(5000);
+                        semaphore.acquire();
+                        //取得obj对象锁的才可以继续执行，否则阻塞
+                        System.out.println(Thread.currentThread().getName()+"取得对象锁");
+                        semaphore.release();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                System.out.println(Thread.currentThread().getName()+"休息完毕，释放掉对象锁");
             }
         });
 
         Thread t2 = new Thread(new Runnable() {
             @Override
             public void run() {
-                synchronized (obj){
-                    System.out.println(Thread.currentThread().getName()+"取得对象锁");
-                    System.out.println(Thread.currentThread().getName()+"业务处理");
+                while (true){
+                    try {
+                        semaphore.acquire();
+                        System.out.println(Thread.currentThread().getName()+"拿到许可执行");
+                        semaphore.release();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
