@@ -1,7 +1,9 @@
 package curry.qin;
 
+import curry.qin.NodeReverse.Node;
 import org.apache.commons.lang.StringUtils;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -15,11 +17,14 @@ import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeMap;
@@ -42,9 +47,9 @@ public class BinearrySearch {
 //        System.out.println(start_am_pm+":"+start);
 
         LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(),LocalTime.of(12,0 ,0 ));
-        System.out.println(localDateTime.get(ChronoField.AMPM_OF_DAY));
-
-        System.out.println( Math.log(4));
+//        System.out.println(localDateTime.get(ChronoField.AMPM_OF_DAY));
+//        System.out.println(new BigDecimal(6).divide(BigDecimal.valueOf(100),4,BigDecimal.ROUND_HALF_UP));
+        System.out.println( 499624 %10);
     }
 
     private static String getMethodName(String fildeName) {
@@ -112,6 +117,10 @@ public class BinearrySearch {
         return maxPos;
     }
 
+    /***
+     * xuanzepaixu
+     * @param nums
+     */
     private static void   selectionCompare(int[] nums){
         int n = nums.length;
         while (n >= 1){
@@ -217,5 +226,88 @@ public class BinearrySearch {
             }
         }
         return false;
+    }
+
+    /**
+     * 思路：
+     * 1、使用最大堆，构建容量为K的最大堆
+     * 2、遍历数组，每次比较数组中的元素与堆顶元素大小，堆堆顶小入堆即可
+     */
+    public ArrayList<Integer> getLeastNumbers_Solution(int [] input, int k) {
+        ArrayList<Integer> ret = new ArrayList<>();
+        if (input == null || k == 0) {
+            return ret;
+        }
+
+        int len = input.length;
+        if (len < k) {
+            return ret;
+        }
+
+        // 构建大顶堆
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(k, new Comparator<Integer>(){
+            @Override
+            public int compare(Integer o1, Integer o2)
+            {
+                return o2 - o1;
+            }
+        });
+
+        // 遍历数组，把比堆顶元素小的元素加入最大堆中
+        for (int i=0; i<len; i++) {
+            int curVal = input[i];
+            //du zhong
+            if (maxHeap.size() < k) {
+                maxHeap.add(curVal);
+            } else {
+                if(curVal > maxHeap.peek() ){
+                    continue;
+                }
+                maxHeap.poll();
+                maxHeap.add(curVal);
+            }
+        }
+
+        // 最大堆所有元素加入要返回的list中
+        ret.addAll(maxHeap);
+
+        return ret;
+    }
+
+    /***
+     * 查找最小元素值
+     * @param array
+     * @return
+     */
+    public int minNumberInRotateArray(int [] array) {
+        if(array.length == 0){
+            return 0;
+        }
+        int res = array[0];
+        for(int i = 0;i< array.length;i++){
+            int temp = array[i] ;
+            if(temp > res){
+                continue;
+            }
+            res = temp;
+        }
+        return res;
+    }
+
+    /***
+     * 青蛙跳台阶问题 F(N) = F(N-1)+F(N-2)
+     * @param target
+     * @return
+     */
+    public int JumpFloor(int target) {
+        if(target == 1){
+            return 1;
+        }
+        else if(target == 2){
+            return 2;
+        }
+        else {
+            return JumpFloor(target-1)+JumpFloor(target-2);
+        }
     }
 }

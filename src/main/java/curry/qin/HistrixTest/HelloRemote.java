@@ -1,5 +1,6 @@
 package curry.qin.HistrixTest;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import curry.qin.HistrixTest.CounsumerHystrix;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;

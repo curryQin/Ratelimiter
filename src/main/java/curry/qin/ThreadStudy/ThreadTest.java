@@ -3,6 +3,7 @@ package curry.qin.ThreadStudy;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -15,15 +16,15 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class ThreadTest {
     public static void main(String[] args) throws InterruptedException {
-        for(int i =0;i<10;i++){
-            int temp = i;
-                Thread t = new Thread(()-> {
-                    System.out.println(temp);
-                });
-                t.start();
-            Thread.sleep(2);
-            }
+        LinkedBlockingDeque queue = new LinkedBlockingDeque<>(10);
+        for(int i = 0; i< 10; i++ ){
+            queue.put(i);
         }
+        for(int i =0;i<10;i++){
+                Thread t = new Thread(()-> System.out.println(queue.poll()));
+                t.start();
+            }
+    }
 //        CountDownLatch countDownLatch = new CountDownLatch(10);
 //        for(int i =0;i<10;i++){
 //            int temp = i;
@@ -42,11 +43,5 @@ public class ThreadTest {
 //            threadSystemOut(i);
 //            Thread.currentThread().sleep(200);
 //        }
-    public static void threadSystemOut(int i){
-        int temp = i;
-        Thread t = new Thread(()-> {
-            System.out.println(temp);
-        });
-        t.start();
-    }
+
 }
