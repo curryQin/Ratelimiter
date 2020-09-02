@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class RateLimiterControllerTest {
+
     @RequestMapping("ratelimiter/test")
     @RateLimiterAnnotation(key = "rateLimiter/test",limit = 3,expire = 5000)
     public String ratelimiter(){

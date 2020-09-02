@@ -1,10 +1,9 @@
 package curry.qin.RedisConfig;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.context.annotation.Bean;
 
 /**
  * @author curry
@@ -14,9 +13,13 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  * @Copyright © 2019-2020 yamibuy
  */
 @RedisAutoConfig
-@SpringBootApplication
 public class RedisConfigTest {
     public static void main(String[] args) {
-        SpringApplication.run(RedisConfigTest.class);
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(RedisConfigTest.class);
+        System.out.println(ctx.getBean("myBean").getClass().getName());
+    }
+    @Bean
+    public String myBean(){
+        return  new String("hello");
     }
 }

@@ -1,29 +1,13 @@
 package curry.qin.RedisConfig;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.cache.CacheManager;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.stereotype.Component;
-import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
-
-import java.util.Arrays;
 
 /**
  * @author curry
@@ -32,7 +16,7 @@ import java.util.Arrays;
  * @date 2020/3/5 13:13
  * @Copyright © 2019-2020 yamibuy
  */
-//@Configuration
+@RedisAutoConfig
 @PropertySource(value = {"classpath:application.properties"})
 public class RedisConfig {
     @Value("${spring.redis.host}")
@@ -85,7 +69,6 @@ public class RedisConfig {
     public RedisTemplate redisTemplate (){
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setConnectionFactory(jedisConnectionFactory());
-        redisTemplate.setDefaultSerializer(new Jackson2JsonRedisSerializer<Object>(Object.class));
         return redisTemplate;
     }
 }

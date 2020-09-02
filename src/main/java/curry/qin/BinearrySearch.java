@@ -1,32 +1,21 @@
 package curry.qin;
 
-import curry.qin.NodeReverse.Node;
-import org.apache.commons.lang.StringUtils;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.TreeMap;
 
 /**
@@ -37,19 +26,22 @@ import java.util.TreeMap;
  * @Copyright © 2019-2020 yamibuy
  */
 public class BinearrySearch {
+    private static  int stackLength = 1;
     public static void main(String[] args) {
+        Map<String, Object> res = new HashMap<>();
+
 //      int[] nums = new int[]{99,55,3,15,2,12,35,6,2,14,13};
 //        bucketSort(nums);
         ZonedDateTime date1 =ZonedDateTime.now(ZoneId.ofOffset("GMT", ZoneOffset.of("-2")));
-
 //        String start_am_pm = getMethodName(Month.of(LocalDateTime.now().getMonthValue()).toString().toLowerCase());
 //        int start = LocalDateTime.now().get(ChronoField.MINUTE_OF_HOUR);
 //        System.out.println(start_am_pm+":"+start);
 
+
         LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(),LocalTime.of(12,0 ,0 ));
 //        System.out.println(localDateTime.get(ChronoField.AMPM_OF_DAY));
 //        System.out.println(new BigDecimal(6).divide(BigDecimal.valueOf(100),4,BigDecimal.ROUND_HALF_UP));
-        System.out.println( 499624 %10);
+//        digui();
     }
 
     private static String getMethodName(String fildeName) {
@@ -309,5 +301,34 @@ public class BinearrySearch {
         else {
             return JumpFloor(target-1)+JumpFloor(target-2);
         }
+    }
+    public static String changeWord(String str){
+        char[] chars = str.toCharArray();
+        String s = "";
+        StringBuilder res = new StringBuilder();
+        int count = 1;
+        for(int i =0; i<= chars.length ;i++){
+            if(i == 0){
+                s= String.valueOf(chars[i]);
+                continue;
+            }
+            if(i == chars.length && !s.equals(String.valueOf(chars[i-2]))){
+                res.append("1"+s);
+                continue;
+            }
+            if(String.valueOf(chars[i]).equals(s)){
+                count = count+1;
+                continue;
+            }
+            s = String.valueOf(chars[i]);
+            res.append(count+String.valueOf(chars[i-1]));
+            count = 1;
+        }
+        return  res.toString();
+    }
+
+    private static void digui(){
+        stackLength = stackLength +1;
+        digui();
     }
 }
